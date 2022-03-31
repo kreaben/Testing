@@ -1,27 +1,57 @@
-import Vue from 'vue'
-import VueRouter from 'vue-router'
-import HomeView from '../views/HomeView.vue'
+import Vue from "vue";
+import VueRouter from "vue-router";
+import Home from "../views/Home.vue";
+import Administracion from "../views/Administracion.vue";
+import Login from "../views/Login.vue";
+import Registrar from "../views/Registrar.vue";
+import { getAuth } from "firebase/auth";
 
-Vue.use(VueRouter)
+import "bootstrap/dist/css/bootstrap.css";
+import "bootstrap-vue/dist/bootstrap-vue.css";
+
+Vue.use(VueRouter);
 
 const routes = [
   {
-    path: '/',
-    name: 'home',
-    component: HomeView
+    path: "/",
+    name: "Home",
+    component: Home
   },
   {
-    path: '/about',
-    name: 'about',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '../views/AboutView.vue')
-  }
-]
+    path: "/administracion",
+    name: "Administracion",
+    component: Administracion
+  },
+  {
+    path: "/login",
+    name: "Login",
+    component: Login
+  },
+  {
+    path: "/registrar",
+    name: "Registar",
+    component: Registrar
+  },
+];
 
 const router = new VueRouter({
+  mode: "history",
+  base: process.env.BASE_URL,
   routes
-})
+});
 
-export default router
+router.beforeEach((to, from, next) => {
+  const sesionActiva = getAuth().currentUser;
+  console.log(sesionActiva);
+  const rutaRestringida = to.meta.restringida;
+
+  if (sesionActiva && rutaRestringida) {
+    next();
+  } else if (!sesionActiva && rutaRestringida) {
+    next("/home");
+  }
+
+  next();
+});
+
+export default router;
