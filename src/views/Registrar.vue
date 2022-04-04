@@ -11,50 +11,49 @@
           type="password"
         />
 
-        <b-button @click="registrar" class="m-3" variant="success"
+        <b-button @click="registrar_Usuario" class="m-3" variant="success"
           >Registrar</b-button
         >
         <b-button class="m-3" variant="danger">Limpiar Formulario</b-button>
         <b-button class="m-3" variant="warning">Limpiar Validación</b-button>
       </div>
     </b-container>
+    <span v-if="error">{{error}}</span>
   </div>
 </template>
 
 <script>
-import { getFirestore, collection, addDoc } from "firebase/firestore";
-import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
-
+import {mapActions} from "vuex"
 export default {
-  name: "Register",
   data() {
     return {
       usuario: {
         email: "",
         password: "",
       },
+      error : null,
     };
   },
   methods: {
-    async addUser() {
-      alert("Regristro con exito!");
-      const db = getFirestore();
-
-      const coleccion = collection(db, "usuarios");
-
-      const documento = this.usuario;
-      await addDoc(coleccion, documento);
-    },
-
-    async registrar() {
-      const { email, password } = this.usuario;
-      const auth = getAuth();
-      await createUserWithEmailAndPassword(auth, email, password);
-      this.$router.push("/");
+    ...mapActions(["register_User", "register_Profile"]),
+    async registrar_Usuario(){
+      try {
+        const { usuario }= this;
+        await this.register_User(usuario);
+        delete usuario.password;
+        await this.register_Profile(usuario);
+        this.usuario.email="";
+        this.usuario.password="";
+        this.error = "";
+        alert("Usuario creado con exito");
+      } catch (error) {
+        alert("algo salio mal")
+        this.error= error.code.split("auth/")[1].replaceAll("-", " ")
+      }
     },
   },
 };
 </script>
 
-<style scoped>
+<style>
 </style>

@@ -95,12 +95,12 @@
       </table>
 
       <div>
-        <input class="uno m-2" type="text" readonly="readonly" />
-        <input class="dos m-2" type="text" readonly="readonly" />
-        <input class="tres m-2" type="text" readonly="readonly" />
-        <input class="cuatro m-2" type="text" readonly="readonly" />
-        <input class="cinco m-2" type="text" readonly="readonly" />
-        <input class="seis m-2" type="text" readonly="readonly" />
+        <input class="uno m-2" type="text" readonly="readonly" placeholder="Cantidad de alumnos permitidos:" >
+        <input class="dos m-2" type="text" readonly="readonly" placeholder="Cantidad total de alumnos inscritos:">
+        <input class="tres m-2" type="text" readonly="readonly" placeholder="Cantidad total de cuoos restantes:">
+        <input class="cuatro m-2" type="text" readonly="readonly" placeholder="Cantidad total de cursos terminados:">
+        <input class="cinco m-2" type="text" readonly="readonly" placeholder="Cantidad total de cursos activos">
+        <input class="seis m-2" type="text" readonly="readonly" placeholder="Cantidad total de cursos:">
       </div>
 
       <b-modal v-model="modalShow">

@@ -22,7 +22,7 @@
 </template>
 
 <script>
-import { getAuth, signInWithEmailAndPassword } from "@firebase/auth";
+
 import { mapActions } from "vuex";
 export default {
   data() {
@@ -34,21 +34,20 @@ export default {
     };
   },
   methods: {
-    ...mapActions(["inciar_Sesion"]),
-    async iniciarSesion() {
-      const { email, password } = this.usuario;
-      const auth = getAuth();
-      await signInWithEmailAndPassword(auth, email, password).then(
-        (response) => {
-          console.log("Bienvenido de vuelta");
-          this.$router.push("/");
-        }
-      );
-    },
-  },
-};
+    ...mapActions(["inciar_Sesion", "get_User"]),
+    async iniciarSesion(){
+     
+     try {
+       const {usuario}= this;
+       await this.inciar_Sesion(usuario);
+       await this.get_User(usuario)
+       this.usuario.mail=""
+       this.usuario.password=""
+       alert("usuario identificado")
+     } catch (error) {
+       alert("algo salio mal")
+     }
+   }
+  }
+}  
 </script>
-
-
-<style>
-</style>
