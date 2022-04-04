@@ -11,7 +11,7 @@
           <b-nav-item to="/administracion">Administracion</b-nav-item>
           <b-nav-item to="/login">Login</b-nav-item>
           <b-nav-item to="/registrar">Registrar</b-nav-item>
-          <b-nav-item to="/editar">Editar</b-nav-item>
+        
         </b-navbar-nav>
 
         <!-- Right aligned nav items -->
@@ -28,11 +28,13 @@ import { getAuth } from '@firebase/auth';
 export default {
   name: "Navbar",
   methods:{
-    logout(){
-      getAuth().signOut().then((response)=>{
+     logout(){
+        getAuth().signOut().then((response)=>{
         alert("Te has desblogueado con exito")
-        this.$router.push("/Login")
-      });
+          user= false 
+          if(this.$route.meta.requiresAuth)
+          this.$router.push("/login");      
+      })
     }
   }
 };

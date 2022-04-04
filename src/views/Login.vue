@@ -18,6 +18,7 @@
         <b-button class="m-3" variant="warning">Limpiar Validación</b-button>
       </div>
     </b-container>
+    {{$store.state.user}}
   </div>
 </template>
 
@@ -36,16 +37,16 @@ export default {
   methods: {
     ...mapActions(["inciar_Sesion", "get_User"]),
     async iniciarSesion(){
-     
      try {
        const {usuario}= this;
        await this.inciar_Sesion(usuario);
-       await this.get_User(usuario)
-       this.usuario.mail=""
-       this.usuario.password=""
-       alert("usuario identificado")
+       await this.get_User(usuario);
+       this.usuario.email="";
+       this.usuario.password="";
+       alert("usuario identificado");
+       this.$router.push("/")
      } catch (error) {
-       alert("algo salio mal")
+       alert("algo salio mal");
      }
    }
   }
