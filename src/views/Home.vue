@@ -1,6 +1,7 @@
 <template>
 <b-container class="bv-example-row">
   <h2 style="margin: 20px 0">Lista de Cursos</h2>
+  {{$store.state.user}}
   <b-row>
     <b-col>
       <b-card

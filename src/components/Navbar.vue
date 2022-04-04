@@ -16,6 +16,7 @@
 
         <!-- Right aligned nav items -->
       </b-collapse>
+      
       <span @click="logout" v-b-tooltip.hover title="Exit"><b-avatar icon="door-closed"> </b-avatar
       ></span>
     </b-navbar>

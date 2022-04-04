@@ -1,17 +1,22 @@
 import Vue from "vue";
 import Vuex from "vuex";
 import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth";
-import { getFirestore, collection, addDoc, getDocs, query, where } from "firebase/firestore";
+import { getFirestore, collection, addDoc, getDocs, query, where, onSnapshot } from "firebase/firestore";
+import { querystring } from "@firebase/util";
 
 Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
     user: null,
+    curso: []
   },
   mutations: {
     SET_USER(state, user){
       state.user = user;
+    },
+    SET_CURSOS(state, curso){
+      state.curso= curso
     }
   },
   actions: {
@@ -42,6 +47,29 @@ export default new Vuex.Store({
         };
         commit("SET_USER", user)
       })
+    },
+     get_Cursos({commit}) {
+       const { curso }= state
+       if (curso.lenght === 0){
+      const db= getFirestore();
+      const q = query(collection(db, curso));
+      onSnapshot(q, (querySnapshot)=>{
+        const curso= [];
+        querySnapshot.forEach(doc =>{
+          const curso = {id: doc.id, data: doc.data()}
+        });
+        commit("SET_CURSOS", curso)
+      })
     }
-  }
+  },
+  
+  },
+  getters:{
+    totalDeCupos(state){
+      const curso= this;
+      return curso.reduce((a,b)=>{
+        return a + b.data.cupos
+      },0)
+      }
+    }
 });
